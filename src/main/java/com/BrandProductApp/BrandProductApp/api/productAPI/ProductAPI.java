@@ -1,13 +1,15 @@
 package com.BrandProductApp.BrandProductApp.api.productAPI;
 
+import com.BrandProductApp.BrandProductApp.dto.productDTO.ProductCreateDTO;
+import com.BrandProductApp.BrandProductApp.dto.productDTO.ProductUpdateDTO;
 import com.BrandProductApp.BrandProductApp.dto.productDTO.ProductViewDTO;
 import com.BrandProductApp.BrandProductApp.service.productService.ProductService;
+import com.BrandProductApp.BrandProductApp.util.GenericResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,7 +25,34 @@ public class ProductAPI {
         return ResponseEntity.ok(product);
     }
 
-    public ResponseEntity<List<ProductViewDTO>> getProduct(){
-
+    @GetMapping
+    public ResponseEntity<List<ProductViewDTO>> getProducts(){
+        final List<ProductViewDTO> products = productService.getProduct();
+        return ResponseEntity.ok(products);
     }
+
+    @PostMapping
+    public ResponseEntity<?> createProduct (@Valid @RequestBody ProductCreateDTO productCreateDTO){
+        productService.createProduct(productCreateDTO);
+        return ResponseEntity.ok(new GenericResponse("User created!"));
+    }
+
+    @PutMapping
+    public ResponseEntity<ProductViewDTO> updateProduct(@PathVariable("id") Long id, @RequestBody ProductUpdateDTO productUpdateDTO){
+        final ProductViewDTO product = productService.updateProduct(id, productUpdateDTO);
+        return ResponseEntity.ok(product);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable ("id") Long id){
+        productService.deleteProduct(id);
+        return ResponseEntity.ok(new GenericResponse("User deleted!"));
+    }
+
+    @GetMapping("slice")
+    public ResponseEntity<List<ProductViewDTO>> slice(Pageable pageable){
+        final List<ProductViewDTO> products = productService.slice(pageable);
+        return ResponseEntity.ok(products);
+    }
+
 }

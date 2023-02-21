@@ -13,6 +13,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(ElementType.FIELD)
 @Constraint(validatedBy = {UniqueNameValidator.class})
 public @interface UniqueName {
+    //Burası brand için kullanılacak brand adı yalnızca 1 kere tanımlanabilir
     String message() default "{backend.constraints.UniqueName.message}";
 
     Class<?>[] groups() default {};

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(name = "name", nullable = false,length = 50,unique = true)
     private String name;
@@ -19,10 +19,15 @@ public class Product {
     @Column(name = "price", nullable = false,length = 50,unique = true)
     private double price;
 
-    public Product(Long id, String name, double price) {
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
+
+    public Product(Long id, String name, double price, Brand brand) {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.brand = brand;
     }
 
 

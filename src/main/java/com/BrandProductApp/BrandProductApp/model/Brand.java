@@ -1,5 +1,6 @@
 package com.BrandProductApp.BrandProductApp.model;
 
+import com.BrandProductApp.BrandProductApp.validator.UniqueName;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
