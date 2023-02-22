@@ -38,7 +38,7 @@ public class ProductServiceImp implements ProductService{
     @Override
     public ProductViewDTO createProduct(ProductCreateDTO productCreateDTO) {
         final Product product = productRepository.save(
-                new Product(productCreateDTO.getName(),productCreateDTO.getPrice())
+                new Product(productCreateDTO.getName(),productCreateDTO.getPrice(), productCreateDTO.getBrand())
         );
         return ProductViewDTO.of(product);
     }
@@ -48,8 +48,9 @@ public class ProductServiceImp implements ProductService{
     public ProductViewDTO updateProduct(Long id, ProductUpdateDTO productUpdateDTO) {
         final Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException("Not Found Exception"));
         product.setName(productUpdateDTO.getName());
-        product.setPrice(product.getPrice());
-        return null;
+        product.setPrice(productUpdateDTO.getPrice());
+        final Product updatedProduct = productRepository.save(product);
+        return ProductViewDTO.of(updatedProduct);
     }
 
     @Override

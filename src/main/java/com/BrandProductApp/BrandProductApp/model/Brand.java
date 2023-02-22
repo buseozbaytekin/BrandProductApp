@@ -17,8 +17,9 @@ public class Brand {
     @Column(name = "name", nullable = false,length = 50,unique = true)
     private String name;
 
-    public Brand(Long id) {
+    public Brand(Long id, String name) {
         this.id = id;
         this.name = name;
     }
+
 }

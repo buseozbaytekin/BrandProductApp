@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,29 +33,36 @@ public class BrandServiceImp implements BrandService{
     @Override
     @Transactional(readOnly = true,propagation = Propagation.SUPPORTS)
     public List<BrandViewDTO> getBrand() {
-        return null;
+        return brandRepository.findAll().stream().map(BrandViewDTO::of).collect(Collectors.toList());
     }
 
     @Override
     public BrandViewDTO createBrand(BrandCreateDTO brandCreateDTO) {
-        return null;
+        final Brand brand = brandRepository.save(
+                new Brand(brandCreateDTO.getId(),brandCreateDTO.getName())
+        );
+        return BrandViewDTO.of(brand);
     }
 
     @Override
     @Transactional
     public BrandViewDTO updateBrand(Long id, BrandUpdateDTO brandUpdateDTO) {
-        return null;
+        final Brand brand = brandRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found exception"));
+        brand.setName(brandUpdateDTO.getName());
+        final Brand updatedBrand = brandRepository.save(brand);
+        return BrandViewDTO.of(updatedBrand);
     }
 
     @Override
     @Transactional
     public void deleteBrand(Long id) {
-
+        final Brand brand = brandRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found exception"));
+        brandRepository.deleteById(brand.getId());
     }
 
     @Override
     @Transactional(readOnly = true,propagation = Propagation.SUPPORTS)
     public List<BrandViewDTO> slice(Pageable pageable) {
-        return null;
+        return brandRepository.findAll().stream().map(BrandViewDTO::of).collect(Collectors.toList());
     }
 }

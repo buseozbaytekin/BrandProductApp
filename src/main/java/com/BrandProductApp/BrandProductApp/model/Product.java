@@ -23,16 +23,9 @@ public class Product {
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
-    public Product(Long id, String name, double price, Brand brand) {
-        this.id = id;
+    public Product(String name, double price, Brand brand) {
         this.name = name;
         this.price = price;
         this.brand = brand;
-    }
-
-
-    public Product(String name, double price) {
-        this.name = name;
-        this.price = price;
     }
 }
